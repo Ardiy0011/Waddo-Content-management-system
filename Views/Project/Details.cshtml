@@ -1,0 +1,89 @@
+﻿@model ProjectManager.Models.ProjectModel
+
+@{
+    ViewBag.Title = "Project Details - " + Model.Name;
+}
+
+<h2>@Model.Name</h2>
+
+<button type="button" class="btn btn-primary" onclick="showAddFieldModal()">Add Field</button>
+
+<div id="fieldsContainer">
+    @foreach (var field in Model.Fields)
+    {
+        <div class="form-group">
+            <label>@field.Name (@field.Type)</label>
+            @if (field.Type == "Short Text")
+            {
+                <input type="text" class="form-control" />
+            }
+            else if (field.Type == "Long Text")
+            {
+                <textarea class="form-control"></textarea>
+            }
+            <button type="button" class="btn btn-danger">Remove</button>
+        </div>
+    }
+</div>
+
+<div class="modal" id="addFieldModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Field</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addFieldForm">
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("projectId", Model.Id)
+                    <div class="form-group">
+                        <label for="fieldName">Field Name</label>
+                        <input type="text" id="fieldName" name="fieldName" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="fieldType">Field Type</label>
+                        <select id="fieldType" name="fieldType" class="form-control">
+                            <option value="Short Text">Short Text</option>
+                            <option value="Long Text">Long Text</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Add Field" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function showAddFieldModal() {
+            $('#addFieldModal').modal('show');
+        }
+
+        $(document).ready(function () {
+            $('#addFieldForm').submit(function (event) {
+                event.preventDefault();
+
+                $.ajax({
+                    url: '@Url.Action("AddField", "Project")',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function (data) {
+                        if (data.success) {
+                            // Append the new field to the fields container
+                            $('#fieldsContainer').append('<div class="form-group"><label>' + $('#fieldName').val() + ' (' + $('#fieldType').val() + ')</label><button type="button" class="btn btn-danger">Remove</button></div>');
+                            $('#addFieldModal').modal('hide');
+                        } else {
+                            alert('Error adding field.');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}

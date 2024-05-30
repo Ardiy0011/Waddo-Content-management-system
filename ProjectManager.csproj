@@ -236,12 +236,12 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Project\Index.cshtml" />
     <Content Include="Views\Project\Create.cshtml" />
-    <Content Include="Views\Project\CreateFields.cshtml" />
     <Content Include="Views\FieldModels\Create.cshtml" />
     <Content Include="Views\FieldModels\Delete.cshtml" />
     <Content Include="Views\FieldModels\Details.cshtml" />
     <Content Include="Views\FieldModels\Edit.cshtml" />
     <Content Include="Views\FieldModels\Index.cshtml" />
+    <Content Include="Views\Project\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

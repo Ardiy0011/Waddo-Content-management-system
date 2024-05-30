@@ -24,10 +24,11 @@ namespace ProjectManager.Controllers
             return View();
         }
 
+
         // POST: Project/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Name")] ProjectModel project)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Name,Description")] ProjectModel project)
         {
             if (ModelState.IsValid)
             {
@@ -38,6 +39,7 @@ namespace ProjectManager.Controllers
 
             return Json(new { success = false });
         }
+
 
         // GET: Project/Details/5
         public async Task<ActionResult> Details(int id)

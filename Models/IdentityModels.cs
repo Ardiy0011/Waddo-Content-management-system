@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
-
+// setting up the ApplicationDbContext class for auth and project management
 namespace ProjectManager.Models
 {
 

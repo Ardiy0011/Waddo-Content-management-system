@@ -22,6 +22,14 @@
             </div>
         </div>
 
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
         <div id="fieldsContainer"></div>
 
         <div class="form-group">
@@ -36,44 +44,4 @@
             </div>
         </div>
     </div>
-}
-
-<div id="fieldPopup" style="display:none;">
-    <label for="fieldLabel">Field Label:</label>
-    <input type="text" id="fieldLabel" />
-    <button type="button" onclick="hideFieldPopup()">Cancel</button>
-    <button type="button" onclick="confirmAddField()">Add</button>
-</div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    <script>
-        var fieldCount = 0;
-        var maxFields = 5;
-
-        function addField() {
-            if (fieldCount >= maxFields) {
-                alert("Creation limit reached");
-                return;
-            }
-            document.getElementById('fieldPopup').style.display = 'block';
-        }
-
-        function hideFieldPopup() {
-            document.getElementById('fieldPopup').style.display = 'none';
-        }
-
-        function confirmAddField() {
-            var fieldLabel = document.getElementById('fieldLabel').value;
-            if (fieldLabel) {
-                fieldCount++;
-                var container = document.getElementById('fieldsContainer');
-                var div = document.createElement('div');
-                div.className = 'form-group';
-                div.innerHTML = '<label class="control-label col-md-2">' + fieldLabel + '</label><div class="col-md-10"><input type="text" name="Fields[' + fieldCount + '].FieldValue" class="form-control" /><input type="hidden" name="Fields[' + fieldCount + '].FieldName" value="' + fieldLabel + '" /></div>';
-                container.appendChild(div);
-                hideFieldPopup();
-            }
-        }
-    </script>
 }
