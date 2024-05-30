@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -34,17 +33,22 @@ namespace ProjectManager.Controllers
             {
                 db.Projects.Add(project);
                 await db.SaveChangesAsync();
-                return RedirectToAction("CreateFields", new { id = project.Id });
+                return Json(new { success = true, projectId = project.Id, projectName = project.Name });
+            }
+
+            return Json(new { success = false });
+        }
+
+        // GET: Project/Details/5
+        public async Task<ActionResult> Details(int id)
+        {
+            var project = await db.Projects.Include(p => p.Fields).FirstOrDefaultAsync(p => p.Id == id);
+            if (project == null)
+            {
+                return HttpNotFound();
             }
 
             return View(project);
-        }
-
-        // GET: Project/CreateFields
-        public ActionResult CreateFields(int id)
-        {
-            ViewBag.ProjectId = id;
-            return View();
         }
 
         // POST: Project/AddField
@@ -68,7 +72,19 @@ namespace ProjectManager.Controllers
             db.Fields.Add(field);
             await db.SaveChangesAsync();
 
-            return RedirectToAction("CreateFields", new { id = projectId });
+            return Json(new { success = true });
+        }
+
+        // GET: Project/GetProjectData
+        public async Task<ActionResult> GetProjectData(int id)
+        {
+            var project = await db.Projects.Include(p => p.Fields).FirstOrDefaultAsync(p => p.Id == id);
+            if (project == null)
+            {
+                return HttpNotFound();
+            }
+
+            return Json(project, JsonRequestBehavior.AllowGet);
         }
     }
 }
