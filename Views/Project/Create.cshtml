@@ -1,0 +1,79 @@
+﻿@model ProjectManager.Models.ProjectModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>ProjectModel</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div id="fieldsContainer"></div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="button" value="Add Field" onclick="addField()" class="btn btn-default" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div id="fieldPopup" style="display:none;">
+    <label for="fieldLabel">Field Label:</label>
+    <input type="text" id="fieldLabel" />
+    <button type="button" onclick="hideFieldPopup()">Cancel</button>
+    <button type="button" onclick="confirmAddField()">Add</button>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        var fieldCount = 0;
+        var maxFields = 5;
+
+        function addField() {
+            if (fieldCount >= maxFields) {
+                alert("Creation limit reached");
+                return;
+            }
+            document.getElementById('fieldPopup').style.display = 'block';
+        }
+
+        function hideFieldPopup() {
+            document.getElementById('fieldPopup').style.display = 'none';
+        }
+
+        function confirmAddField() {
+            var fieldLabel = document.getElementById('fieldLabel').value;
+            if (fieldLabel) {
+                fieldCount++;
+                var container = document.getElementById('fieldsContainer');
+                var div = document.createElement('div');
+                div.className = 'form-group';
+                div.innerHTML = '<label class="control-label col-md-2">' + fieldLabel + '</label><div class="col-md-10"><input type="text" name="Fields[' + fieldCount + '].FieldValue" class="form-control" /><input type="hidden" name="Fields[' + fieldCount + '].FieldName" value="' + fieldLabel + '" /></div>';
+                container.appendChild(div);
+                hideFieldPopup();
+            }
+        }
+    </script>
+}
