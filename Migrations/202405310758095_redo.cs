@@ -3,7 +3,7 @@
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Projectfeilds : DbMigration
+    public partial class redo : DbMigration
     {
         public override void Up()
         {
@@ -26,6 +26,7 @@
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 100),
+                        Description = c.String(maxLength: 500),
                     })
                 .PrimaryKey(t => t.Id);
             

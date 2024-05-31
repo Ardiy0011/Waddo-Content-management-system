@@ -1,4 +1,6 @@
-﻿namespace ProjectManager.Migrations
+﻿using static System.Data.Entity.Migrations.Model.UpdateDatabaseOperation;
+
+namespace ProjectManager.Migrations
 {
     using System;
     using System.Data.Entity;

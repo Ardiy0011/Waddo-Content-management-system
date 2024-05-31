@@ -31,8 +31,29 @@
                 {
                     @Html.AntiForgeryToken()
                     <div class="form-group">
-                        @Html.LabelFor(m => m.Name)
-                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", id = "projectName" })
+                        @if (Model.Any())
+                        {
+                            @Html.LabelFor(m => m.First().Name)
+                            @Html.TextBoxFor(m => m.First().Name, new { @class = "form-control", id = "projectName" })
+                        }
+                        else
+                        {
+                            @Html.LabelFor(m => m.FirstOrDefault().Name)
+                            @Html.TextBoxFor(m => m.FirstOrDefault().Name, new { @class = "form-control", id = "projectName" })
+                        }
+                    </div>
+
+                    <div class="form-group">
+                        @if (Model.Any())
+                        {
+                            @Html.LabelFor(m => m.First().Description)
+                            @Html.TextAreaFor(m => m.First().Description, new { @class = "form-control", id = "projectDescription" })
+                        }
+                        else
+                        {
+                            @Html.LabelFor(m => m.FirstOrDefault().Description)
+                            @Html.TextAreaFor(m => m.FirstOrDefault().Description, new { @class = "form-control", id = "projectDescription" })
+                        }
                     </div>
                     <div class="form-group">
                         <input type="submit" value="Create" class="btn btn-primary" />

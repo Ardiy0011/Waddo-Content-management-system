@@ -24,22 +24,26 @@ namespace ProjectManager.Controllers
             return View();
         }
 
-
-        // POST: Project/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Name,Description")] ProjectModel project)
+        public ActionResult Create(ProjectCreateViewModel model)
         {
             if (ModelState.IsValid)
             {
+                var project = new ProjectModel
+                {
+                    Name = model.Name,
+                    Description = model.Description
+                };
+
                 db.Projects.Add(project);
-                await db.SaveChangesAsync();
+                db.SaveChanges();
+
                 return Json(new { success = true, projectId = project.Id, projectName = project.Name });
             }
 
             return Json(new { success = false });
         }
-
 
         // GET: Project/Details/5
         public async Task<ActionResult> Details(int id)
@@ -76,6 +80,24 @@ namespace ProjectManager.Controllers
 
             return Json(new { success = true });
         }
+
+        // POST: Project/RemoveField
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RemoveField(int fieldId)
+        {
+            var field = await db.Fields.FindAsync(fieldId);
+            if (field == null)
+            {
+                return HttpNotFound();
+            }
+
+            db.Fields.Remove(field);
+            await db.SaveChangesAsync();
+
+            return Json(new { success = true });
+        }
+
 
         // GET: Project/GetProjectData
         public async Task<ActionResult> GetProjectData(int id)

@@ -11,7 +11,7 @@
 <div id="fieldsContainer">
     @foreach (var field in Model.Fields)
     {
-        <div class="form-group">
+        <div class="form-group field-group" data-field-id="@field.Id">
             <label>@field.Name (@field.Type)</label>
             @if (field.Type == "Short Text")
             {
@@ -21,7 +21,7 @@
             {
                 <textarea class="form-control"></textarea>
             }
-            <button type="button" class="btn btn-danger">Remove</button>
+            <button type="button" class="btn btn-danger" onclick="removeField(@field.Id)">Remove</button>
         </div>
     }
 </div>
@@ -65,25 +65,21 @@
             $('#addFieldModal').modal('show');
         }
 
-        $(document).ready(function () {
-            $('#addFieldForm').submit(function (event) {
-                event.preventDefault();
-
+        function removeField(fieldId) {
+            if (confirm("Are you sure you want to remove this field?")) {
                 $.ajax({
-                    url: '@Url.Action("AddField", "Project")',
+                    url: '@Url.Action("RemoveField", "Project")',
                     type: 'POST',
-                    data: $(this).serialize(),
+                    data: { fieldId: fieldId },
                     success: function (data) {
                         if (data.success) {
-                            // Append the new field to the fields container
-                            $('#fieldsContainer').append('<div class="form-group"><label>' + $('#fieldName').val() + ' (' + $('#fieldType').val() + ')</label><button type="button" class="btn btn-danger">Remove</button></div>');
-                            $('#addFieldModal').modal('hide');
+                            $('.field-group[data-field-id="' + fieldId + '"]').remove();
                         } else {
-                            alert('Error adding field.');
+                            alert('Error removing field.');
                         }
                     }
                 });
-            });
-        });
+            }
+        }
     </script>
 }
