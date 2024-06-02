@@ -13,13 +13,13 @@ namespace ProjectManager.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Project
+        //a controller that handles that rountes to the Project index view
         public ActionResult Index()
         {
             return View(db.Projects.ToList());
         }
 
-        // GET: Project/Create
+        // a controller that handles routes o the create project view
         public ActionResult Create()
         {
             return View();
@@ -46,7 +46,7 @@ namespace ProjectManager.Controllers
             return Json(new { success = false });
         }
 
-        // GET: Project/Details/5
+        // a controller that handles routes to the details view
         public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
@@ -64,7 +64,7 @@ namespace ProjectManager.Controllers
         }
 
 
-        // POST: Project/AddField
+        // the endpoint to add filed in the details.cshtml view
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddField(int projectId, string fieldName, string fieldDescription)
@@ -111,7 +111,7 @@ namespace ProjectManager.Controllers
         }
 
 
-        // New API endpoint to get a field's description by project name and field name
+        // the API endpoint that retrieves a field's description by project name and field name
         [HttpGet]
         public async Task<ActionResult> GetFieldDescription(string projectName, string fieldName)
         {
@@ -123,6 +123,7 @@ namespace ProjectManager.Controllers
                 return HttpNotFound();
             }
 
+
             var field = project.Fields.FirstOrDefault(f => f.Name == fieldName);
             if (field == null)
             {
@@ -132,9 +133,9 @@ namespace ProjectManager.Controllers
             return Json(field.Description, JsonRequestBehavior.AllowGet);
         }
 
-        // New API endpoint to get all fields' names and descriptions for a specific project
+        // the endpoint to get all fields' names and descriptions for a specific project
         [HttpGet]
-        public async Task<ActionResult> GetFields(string projectName)
+        public async Task<ActionResult> GetFields(string projectName )
         {
             var project = await db.Projects.Include(p => p.Fields)
                                            .FirstOrDefaultAsync(p => p.Name == projectName);
