@@ -6,6 +6,7 @@
     <title>@ViewBag.Title - Waddo content mananger</title>
     @Styles.Render("~/Content/css")
     <link rel="stylesheet" href="~/wwwroot/css/login-style.css" />
+    <link rel="stylesheet" href="~/wwwroot/css/site.css" />
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
@@ -21,10 +22,7 @@
                         @Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })
                     </li>
                     <li class="nav-item">
-                        @Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })
-                    </li>
-                    <li class="nav-item">
-                        @Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })
+                        @Html.ActionLink("Documentation", "Documentation", "Home", new { area = "" }, new { @class = "nav-link" })
                     </li>
                     @if (User.Identity.IsAuthenticated)
                     {
@@ -59,7 +57,7 @@
         <hr />
         <footer class="footer mt-auto py-3 bg-light">
             <div class="container">
-                <span class="text-muted">&copy; @DateTime.Now.Year - My ASP.NET Application</span>
+                <span class="text-muted">&copy; @DateTime.Now.Year - Waddo. All rights reserved</span>
             </div>
         </footer>
     </div>

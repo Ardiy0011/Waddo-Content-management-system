@@ -6,62 +6,74 @@
 
 <h2>@Model.Name</h2>
 
-<button type="button" class="btn btn-primary" onclick="showAddFieldModal()">Add Field</button>
+<div class="feilds-add-main">
+    <button type="button" class="btn btn-primary" onclick="showAddFieldModal()">+</button>
 
-<div id="fieldsContainer">
-    @foreach (var field in Model.Fields)
-    {
-        <div class="form-group field-group" data-field-id="@field.Id">
-            <label>@field.Name (@field.Type)</label>
-            @if (field.Type == "Short Text")
-            {
-                <input type="text" class="form-control" />
-            }
-            else if (field.Type == "Long Text")
-            {
-                <textarea class="form-control"></textarea>
-            }
-            <button type="button" class="btn btn-danger" onclick="removeField(@field.Id)">Remove</button>
-        </div>
-    }
-</div>
+    <div id="fieldsContainer">
+        @foreach (var field in Model.Fields)
+        {
+            <div class="form-group field-group" data-field-id="@field.Id">
+                <div class="field-info">
+                    <label>@field.Name</label>
+                    <p>@field.Description</p>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="editField(@field.Id)">Edit</button>
+                <button type="button" class="btn btn-danger" onclick="removeField(@field.Id)">Remove</button>
 
-<div class="modal" id="addFieldModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add Field</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+
             </div>
-            <div class="modal-body">
-                <form id="addFieldForm">
-                    @Html.AntiForgeryToken()
-                    @Html.Hidden("projectId", Model.Id)
-                    <div class="form-group">
-                        <label for="fieldName">Field Name</label>
-                        <input type="text" id="fieldName" name="fieldName" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label for="fieldType">Field Type</label>
-                        <select id="fieldType" name="fieldType" class="form-control">
-                            <option value="Short Text">Short Text</option>
-                            <option value="Long Text">Long Text</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Add Field" class="btn btn-primary" />
-                    </div>
-                </form>
+        }
+    </div>
+
+    <div class="modal" id="addFieldModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Field</h5>
+                </div>
+
+
+                <div class="addfield-modal-body">
+                    <form id="addFieldForm">
+                        @Html.AntiForgeryToken()
+                        @Html.Hidden("projectId", Model.Id)
+                        @Html.Hidden("fieldId", "")
+
+                        <div class="addfield-form-group">
+                            <label for="fieldName">Field Name</label>
+                            <input type="text" id="fieldName" name="fieldName" class="form-control" required />
+                        </div>
+
+
+                        <div class="addfield-form-group">
+                            <label for="fieldDescription">Description</label>
+                            <textarea id="fieldDescription" name="fieldDescription" class="form-control" required></textarea>
+                        </div>
+
+
+                        <div class="form-group">
+                            <input type="submit" value="Add Field" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
+
+
             </div>
         </div>
     </div>
 </div>
 
 @section Scripts {
-    <script>
+        <script>
         function showAddFieldModal() {
+            if ($('#fieldsContainer .field-group').length >= 7) {
+                alert('You have reached the maximum number of fields (7).');
+                return;
+            }
+            $('#fieldId').val('');
+            $('#fieldName').val('');
+            $('#fieldDescription').val('');
+            $('#addFieldModal .modal-title').text('Add Field');
             $('#addFieldModal').modal('show');
         }
 
@@ -70,7 +82,9 @@
                 $.ajax({
                     url: '@Url.Action("RemoveField", "Project")',
                     type: 'POST',
-                    data: { fieldId: fieldId },
+                    data: {
+                        fieldId: fieldId
+                    },
                     success: function (data) {
                         if (data.success) {
                             $('.field-group[data-field-id="' + fieldId + '"]').remove();
@@ -81,5 +95,39 @@
                 });
             }
         }
-    </script>
-}
+
+        function editField(fieldId) {
+            var fieldGroup = $('.field-group[data-field-id="' + fieldId + '"]');
+            var fieldName = fieldGroup.find('label').text();
+            var fieldDescription = fieldGroup.find('p').text();
+
+            $('#fieldId').val(fieldId);
+            $('#fieldName').val(fieldName);
+            $('#fieldDescription').val(fieldDescription);
+            $('#addFieldModal .modal-title').text('Edit Field');
+            $('#addFieldModal').modal('show');
+        }
+
+        $(document).ready(function () {
+            $('#addFieldForm').on('submit', function (e) {
+                e.preventDefault();
+
+                var fieldId = $('#fieldId').val();
+                var url = fieldId ? '@Url.Action("EditField", "Project")' : '@Url.Action("AddField", "Project")';
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function (data) {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            alert('Error saving field.');
+                        }
+                    }
+                });
+            });
+        });
+        </script>
+    }

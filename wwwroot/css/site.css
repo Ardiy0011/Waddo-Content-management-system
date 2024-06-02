@@ -1,0 +1,128 @@
+﻿body {
+}
+
+.projectbox{
+    width: 100%;
+    display: flex;
+    margin-top: 10px;
+
+}
+
+
+.add-main {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    align-items: center;
+    flex-direction:column;
+    flex: 1;
+
+}
+
+.modal-dialog {
+    width: 100%;
+
+}
+
+
+#addFieldForm {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+
+
+.feilds-add-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+
+
+.addfield-form-group .form-control {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+
+.sidenav {
+    background-color: #343a40;
+    color: white;
+    height: 100vh;
+    width: 250px;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+}
+
+
+
+.sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    display: block;
+}
+
+.sidenav li {
+    text-decoration: none;
+    color: white;
+    display: block;
+}
+
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+
+
+.add-main {
+    margin-top: 20px;
+}
+
+
+#fieldsContainer {
+    width: 50%;
+}
+
+
+.field-group {
+    margin-bottom: 15px;
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px;
+}
+
+
+
+.field-group label {
+    font-weight: bold;
+}
+
+ .field-group p {
+        margin-bottom: 10px;
+    }
+
+ .form-group {
+    width: 80%;
+    display: flex;
+    gap: 3rem;
+    justify-content: space-between;
+
+}
