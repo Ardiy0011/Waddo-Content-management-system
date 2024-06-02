@@ -1,4 +1,4 @@
-﻿This is a content management system designed to handle their text-based projects efficiently.
+﻿This is a content management system designed to handle text-based projects efficiently.
 
 ## Getting Started
 
