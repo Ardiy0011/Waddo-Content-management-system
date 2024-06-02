@@ -2,9 +2,9 @@
 
 ## Getting Started
 
-1. **Registnd Login:** Togin using Waddo, users need to register for an account and then log in with their credentials. Once logged in, users will have access to the dashboard.
+1. **Register and Login:** You would need to register for an account and then log in with your given credentials. Once logged in, you will have access to the dashboard.
 
-2. **Create a Project:** Users can create new projects from the dashboard. After creating a project, they can add field names and descriptions. Each project can have up to 20 fields.
+2. **Create a Project:** You would then be able to create new projects from the dashboard. After creating a project, you can add field names and descriptions. Each project can have up to 20 fields.
 
 
 ### Endpoints
