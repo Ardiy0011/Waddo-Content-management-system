@@ -9,6 +9,7 @@ using System.Web.Mvc;
 namespace ProjectManager.Controllers
 {
     [Authorize]
+    [RoutePrefix("api/Project")]
     public class ProjectController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -113,8 +114,12 @@ namespace ProjectManager.Controllers
 
         // the API endpoint that retrieves a field's description by project name and field name
         [HttpGet]
+        // use attribute routing to specify"api" prefix for th eapi call routesrather than conventianl in webapiconfig
+        //[Route("api/Project/GetFieldDescription/{projectName}/{fieldName}")]
+        [Route("GetFieldDescription/{projectName}/{fieldName}")]
         public async Task<ActionResult> GetFieldDescription(string projectName, string fieldName)
         {
+            //check database and retriev the matching project name
             var project = await db.Projects.Include(p => p.Fields)
                                            .FirstOrDefaultAsync(p => p.Name == projectName);
 
@@ -123,20 +128,26 @@ namespace ProjectManager.Controllers
                 return HttpNotFound();
             }
 
-
+            //check db also and retrieve the particular feild in the porject within the db
             var field = project.Fields.FirstOrDefault(f => f.Name == fieldName);
             if (field == null)
             {
                 return HttpNotFound();
             }
-
+            
+            //ultimately return on th edescription of the said field within th eproject and witin the db
+            //return as json object
             return Json(field.Description, JsonRequestBehavior.AllowGet);
         }
 
         // the endpoint to get all fields' names and descriptions for a specific project
         [HttpGet]
+        // attribute routing to include "api" for url redability as well
+        [Route("api/Project/GetFields/{projectName}")]
         public async Task<ActionResult> GetFields(string projectName )
         {
+
+            //retrieve matching project name
             var project = await db.Projects.Include(p => p.Fields)
                                            .FirstOrDefaultAsync(p => p.Name == projectName);
 
@@ -145,6 +156,7 @@ namespace ProjectManager.Controllers
                 return HttpNotFound();
             }
 
+            //retireve all feilds and their respective descriptions  and ceovert to list and return as a json object
             var fields = project.Fields.Select(f => new { f.Name, f.Description }).ToList();
             return Json(fields, JsonRequestBehavior.AllowGet);
         }

@@ -4,58 +4,62 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Waddo content mananger</title>
-    @Styles.Render("~/Content/css")
     <link rel="stylesheet" href="~/wwwroot/css/login-style.css" />
     <link rel="stylesheet" href="~/wwwroot/css/site.css" />
+    <link rel="stylesheet" href="~/wwwroot/css/navlayout.css" />
     @Scripts.Render("~/bundles/modernizr")
+
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
-        <div class="container">
-            @Html.ActionLink("Waddo", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" title="Toggle navigation" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        @Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })
-                    </li>
-                    <li class="nav-item">
-                        @Html.ActionLink("Documentation", "Documentation", "Home", new { area = "" }, new { @class = "nav-link" })
-                    </li>
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <li class="nav-item">
-                            <span class="navbar-text">Hello, @User.Identity.Name!</span>
-                        </li>
-                        <li class="nav-item">
-                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "d-inline" }))
-                            {
-                                @Html.AntiForgeryToken()
-                                <a href="javascript:document.getElementById('logoutForm').submit()" class="nav-link">Log off</a>
-                            }
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="nav-item">
-                            @Html.ActionLink("Log in", "Login", "Account", new { area = "" }, new { @class = "nav-link" })
-                        </li>
-                        <li class="nav-item">
-                            @Html.ActionLink("Register", "Register", "Account", new { area = "" }, new { @class = "nav-link" })
-                        </li>
-                    }
-                </ul>
-            </div>
+    <nav class="navbar">
+        <div class="logo">
+            @Html.ActionLink("Waddo", "Index", "Project", new { area = "" }, new { @class = "navbar-brand" })
         </div>
-    </nav>
-    <div class="container body-content mt-3">
+
+
+        <div class="navlinks">
+            <p class="nav-item">
+                @Html.ActionLink("Home", "Index", "Project", new { area = "" }, new { @class = "nav-link" })
+            </p>
+
+            <p class="nav-item">
+                @Html.ActionLink("Documentation", "Documentation", "Home", new { area = "" }, new { @class = "nav-link" })
+            </p>
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                <p class="navbar-text">Hello, @User.Identity.Name!</p>
+
+                <div class="nav-item-logoff">
+                    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+                    }
+                </div>
+
+            }
+            else
+            {
+                <p class="nav-item">
+                    @Html.ActionLink("Log in", "Login", "Account", new { area = "" }, new { @class = "nav-link" })
+                </p>
+
+                <p class="nav-item">
+                    @Html.ActionLink("Register", "Register", "Account", new { area = "" }, new { @class = "nav-link" })
+                </p>
+                    }
+            </div>
+
+</nav>
+
+
+    <div class="container body-content">
         @RenderBody()
 
 
         <hr />
-        <footer class="footer mt-auto py-3 bg-light">
+        <footer class="footer bg-light">
             <div class="container">
                 <span class="text-muted">&copy; @DateTime.Now.Year - Waddo. All rights reserved</span>
             </div>
@@ -63,7 +67,6 @@
     </div>
 
     @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
 </html>

@@ -6,8 +6,8 @@
 
 <h2>@Model.Name</h2>
 
-<div class="feilds-add-main">
-    <button type="button" class="btn btn-primary" onclick="showAddFieldModal()">+</button>
+<div class="fields-add-main">
+    <button type="button" class="btn" onclick="showAddFieldModal()">+</button>
 
     <div id="fieldsContainer">
         @foreach (var field in Model.Fields)
@@ -17,21 +17,19 @@
                     <label>@field.Name</label>
                     <p>@field.Description</p>
                 </div>
-                <button type="button" class="btn btn-primary" onclick="editField(@field.Id)">Edit</button>
+                <button type="button" class="btn" onclick="editField(@field.Id)">Edit</button>
                 <button type="button" class="btn btn-danger" onclick="removeField(@field.Id)">Remove</button>
-
-
             </div>
         }
     </div>
 
-    <div class="modal" id="addFieldModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+    <div class="details-modal" id="addFieldModal" tabindex="-1" role="dialog">
+        <div class="details-modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Add Field</h5>
+                    <span class="close" onclick="hideAddFieldModal()">&times;</span>
                 </div>
-
 
                 <div class="addfield-modal-body">
                     <form id="addFieldForm">
@@ -44,90 +42,103 @@
                             <input type="text" id="fieldName" name="fieldName" class="form-control" required />
                         </div>
 
-
                         <div class="addfield-form-group">
                             <label for="fieldDescription">Description</label>
                             <textarea id="fieldDescription" name="fieldDescription" class="form-control" required></textarea>
                         </div>
-
 
                         <div class="form-group">
                             <input type="submit" value="Add Field" class="btn btn-primary" />
                         </div>
                     </form>
                 </div>
-
-
             </div>
         </div>
     </div>
 </div>
 
 @section Scripts {
-        <script>
+    <script>
         function showAddFieldModal() {
-            if ($('#fieldsContainer .field-group').length >= 7) {
+            if (document.querySelectorAll('#fieldsContainer .field-group').length >= 7) {
                 alert('You have reached the maximum number of fields (7).');
                 return;
             }
-            $('#fieldId').val('');
-            $('#fieldName').val('');
-            $('#fieldDescription').val('');
-            $('#addFieldModal .modal-title').text('Add Field');
-            $('#addFieldModal').modal('show');
+            document.getElementById('fieldId').value = '';
+            document.getElementById('fieldName').value = '';
+            document.getElementById('fieldDescription').value = '';
+            document.querySelector('#addFieldModal .modal-title').textContent = 'Add Field';
+            document.getElementById('addFieldModal').style.display = 'block';
+        }
+
+        function hideAddFieldModal() {
+            document.getElementById('addFieldModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function (event) {
+            var modal = document.getElementById('addFieldModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
         }
 
         function removeField(fieldId) {
             if (confirm("Are you sure you want to remove this field?")) {
-                $.ajax({
-                    url: '@Url.Action("RemoveField", "Project")',
-                    type: 'POST',
-                    data: {
-                        fieldId: fieldId
+                fetch('@Url.Action("RemoveField", "Project")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
                     },
-                    success: function (data) {
-                        if (data.success) {
-                            $('.field-group[data-field-id="' + fieldId + '"]').remove();
-                        } else {
-                            alert('Error removing field.');
-                        }
+                    body: JSON.stringify({ fieldId: fieldId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.querySelector('.field-group[data-field-id="' + fieldId + '"]').remove();
+                    } else {
+                        alert('Error removing field.');
                     }
                 });
             }
         }
 
         function editField(fieldId) {
-            var fieldGroup = $('.field-group[data-field-id="' + fieldId + '"]');
-            var fieldName = fieldGroup.find('label').text();
-            var fieldDescription = fieldGroup.find('p').text();
+            var fieldGroup = document.querySelector('.field-group[data-field-id="' + fieldId + '"]');
+            var fieldName = fieldGroup.querySelector('label').textContent;
+            var fieldDescription = fieldGroup.querySelector('p').textContent;
 
-            $('#fieldId').val(fieldId);
-            $('#fieldName').val(fieldName);
-            $('#fieldDescription').val(fieldDescription);
-            $('#addFieldModal .modal-title').text('Edit Field');
-            $('#addFieldModal').modal('show');
+            document.getElementById('fieldId').value = fieldId;
+            document.getElementById('fieldName').value = fieldName;
+            document.getElementById('fieldDescription').value = fieldDescription;
+            document.querySelector('#addFieldModal .modal-title').textContent = 'Edit Field';
+            document.getElementById('addFieldModal').style.display = 'block';
         }
 
-        $(document).ready(function () {
-            $('#addFieldForm').on('submit', function (e) {
-                e.preventDefault();
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById('addFieldForm').addEventListener('submit', function (event) {
+                event.preventDefault();
 
-                var fieldId = $('#fieldId').val();
+                var fieldId = document.getElementById('fieldId').value;
                 var url = fieldId ? '@Url.Action("EditField", "Project")' : '@Url.Action("AddField", "Project")';
 
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: $(this).serialize(),
-                    success: function (data) {
-                        if (data.success) {
-                            location.reload();
-                        } else {
-                            alert('Error saving field.');
-                        }
+                fetch(url, {
+                    method: 'POST',
+                    body: new URLSearchParams(new FormData(this)),
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Error saving field.');
                     }
                 });
             });
         });
-        </script>
-    }
+    </script>
+}

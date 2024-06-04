@@ -1,0 +1,60 @@
+﻿.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #061728;
+    color: white;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    padding: 0.5rem;
+}
+
+.logo {
+    font-size: 1.5rem;
+    text-decoration: none;
+}
+
+.navbar-brand{
+    color: white;
+    text-decoration: none;
+}
+
+.navlinks {
+    display: flex;
+    gap: 20px;
+    text-decoration: none;
+}
+
+.nav-item a {
+    color: white;
+    text-decoration: none;
+}
+
+.nav-item a:hover {
+    color: #f8f9fa;
+}
+
+
+.nav-item-logoff{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    border-radius: 5px;
+    padding: 5px;
+    text-decoration: none;
+    z-index: 100;
+}
+
+.nav-item-logoff a {
+        color: white;
+        text-decoration: none;
+    }
+
+.nav-item-logoff a:hover {
+color: #f8f9fa;
+}
+
+.nav-item:hover {
+    color: #f8f9fa;
+}
+

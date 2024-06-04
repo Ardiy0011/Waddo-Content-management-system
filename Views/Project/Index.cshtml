@@ -4,34 +4,27 @@
     ViewBag.Title = "Projects";
 }
 
-<h2>Projects</h2>
-
 <main class="projectbox">
+    <section class="sidenav">
+        <h2>Projects</h2>
+        <ul id="projectList">
+            @foreach (var item in Model)
+            {
+                <li>
+                    <a href="@Url.Action("Details", "Project", new { id = item.Id })">@item.Name</a>
+                </li>
+            }
+        </ul>
+    </section>
 
-<section class="sidenav">
-    <ul id="projectList">
-        @foreach (var item in Model)
-        {
-            <li>
-                <a href="@Url.Action("Details", "Project", new { id = item.Id })">@item.Name</a>
-            </li>
-        }
-    </ul>
 
-</section>
-
-
-<div class="add-main">
-    <button type="button" class="btn btn-primary" onclick="showCreateProjectModal()">Create Project</button>
-
-    <div class="modal" id="createProjectModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+    <div class="add-main">
+        <button type="button" class="create-project-btn" onclick="showCreateProjectModal()">Create Project</button>
+        <div class="modal-div" id="createProjectModal">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Create Project</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <span class="close" onclick="closeCreateProjectModal()">&times;</span>
                 </div>
                 <div class="modal-body">
                     @using (Html.BeginForm("Create", "Project", FormMethod.Post, new { id = "createProjectForm" }))
@@ -49,7 +42,6 @@
                                 @Html.TextBoxFor(m => m.FirstOrDefault().Name, new { @class = "form-control", id = "projectName" })
                             }
                         </div>
-
                         <div class="form-group">
                             @if (Model.Any())
                             {
@@ -63,40 +55,58 @@
                             }
                         </div>
                         <div class="form-group">
-                            <input type="submit" value="Create" class="btn btn-primary" />
+                            <input type="submit" value="Create" class="create-project-btn" />
                         </div>
                     }
                 </div>
             </div>
         </div>
     </div>
-</div>
-
 </main>
+
+
+
 @section Scripts {
     <script>
         function showCreateProjectModal() {
-            $('#createProjectModal').modal('show');
+            document.getElementById('createProjectModal').style.display = 'block';
         }
 
-        $(document).ready(function () {
-            $('#createProjectForm').submit(function (event) {
+        function closeCreateProjectModal() {
+            document.getElementById('createProjectModal').style.display = 'none';
+        }
+
+        window.onclick = function (event) {
+            var modal = document.getElementById('createProjectModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('createProjectForm').addEventListener('submit', function (event) {
                 event.preventDefault();
 
-                $.ajax({
-                    url: $(this).attr('action'),
-                    type: $(this).attr('method'),
-                    data: $(this).serialize(),
-                    success: function (data) {
+                var xhr = new XMLHttpRequest();
+                xhr.open(this.method, this.action, true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        var data = JSON.parse(xhr.responseText);
                         if (data.success) {
-                            $('#projectList').append('<li><a href="/Project/Details/' + data.projectId + '">' + data.projectName + '</a></li>');
-                            $('#createProjectModal').modal('hide');
+                            var projectList = document.getElementById('projectList');
+                            var newListItem = document.createElement('li');
+                            newListItem.innerHTML = '<a href="/Project/Details/' + data.projectId + '">' + data.projectName + '</a>';
+                            projectList.appendChild(newListItem);
+                            closeCreateProjectModal();
                         } else {
                             alert('Error creating project.');
                         }
                     }
-                });
+                };
+                xhr.send(new URLSearchParams(new FormData(this)).toString());
             });
         });
+
     </script>
 }

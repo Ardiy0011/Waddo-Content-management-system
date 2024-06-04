@@ -239,6 +239,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="wwwroot\css\docs.css" />
     <Content Include="wwwroot\css\login-style.css" />
+    <Content Include="wwwroot\css\navlayout.css" />
     <Content Include="wwwroot\css\site.css" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
