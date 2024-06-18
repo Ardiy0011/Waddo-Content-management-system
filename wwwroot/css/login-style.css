@@ -24,6 +24,15 @@
     gap: 5px;
 }
 
+
+.form-group{
+    margin-bottom: 15px;
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px;
+}
+
+
 .login-form h2 {
     text-align: center;
 }
@@ -37,6 +46,12 @@
     border-radius: 5px;
     cursor: pointer;
 }
+
+.form-control{
+    height: 15px;
+   
+}
+
 
 /* Additional responsiveness */
 @media (max-width: 768px) {

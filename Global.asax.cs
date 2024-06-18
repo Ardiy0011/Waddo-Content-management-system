@@ -2,6 +2,8 @@
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using NLog.Web; // Ensure you have the correct using statement for NLog.Web
+using NLog;
 
 namespace ProjectManager
 {
@@ -14,6 +16,9 @@ namespace ProjectManager
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            // Initialize NLog with the updated method
+            LogManager.Setup().LoadConfigurationFromFile("nlog.config");
         }
     }
 }

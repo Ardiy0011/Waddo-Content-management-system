@@ -40,7 +40,7 @@
             <div class="endpoint-info">
                 <h3>1. GetFieldDescription</h3>
                 <ul>
-                    <li><strong>URL:</strong> <code>http://localhost:44306/Project/GetFieldDescription</code></li>
+                    <li><strong>URL:</strong> <code>http://localhost:44306/api/ProjectApi/GetFieldDescription</code></li>
                     <li><strong>Method:</strong> <code>GET</code></li>
                     <li>
                         <strong>Parameters:</strong>
@@ -56,7 +56,7 @@
             <div class="endpoint-info">
                 <h3>2. GetFields</h3>
                 <ul>
-                    <li><strong>URL:</strong> <code>http://localhost:44306/Project/GetFields</code></li>
+                    <li><strong>URL:</strong> <code>http://localhost:44306/api/ProjectApi/GetFields</code></li>
                     <li><strong>Method:</strong> <code>GET</code></li>
                     <li>
                         <strong>Parameters:</strong>
@@ -75,38 +75,38 @@
             <div class="code-example">
                 <h3>JavaScript (using Axios)</h3>
                 <pre><code class="language-javascript">
-            import axios from 'axios';
+    import axios from 'axios';
 
-            // Function to get field description
-            const getFieldDescription = async (projectName, fieldName) => {
-              try {
-                const response = await axios.get('http://localhost:44306/Project/GetFieldDescription', {
-                  params: {
-                    projectName: projectName,
-                    fieldName: fieldName
-                  }
-                });
-                console.log(response.data); // Outputs: Drinks from water
-              } catch (error) {
-                console.error('Error fetching field description:', error);
-              }
-            };
-// Function to get all fields
-            const getFields = async (projectName) => {
-              try {
-                const response = await axios.get('http://localhost:44306/Project/GetFields', {
-                  params: { projectName: projectName }
-                });
-                console.log(response.data); // Outputs: [{ Name: "Bucks", Description: "Drinks from water" }, ...]
-              } catch (error) {
-                console.error('Error fetching fields:', error);
-              }
-            };
+    // Function to get field description
+    const getFieldDescription = async (projectName, fieldName) => {
+    try {
+    const response = await axios.get('http://localhost:44306/api/ProjectApi/GetFieldDescription', {
+    params: {
+    projectName: projectName,
+    fieldName: fieldName
+    }
+    });
+    console.log(response.data); // Outputs: Drinks from water
+    } catch (error) {
+    console.error('Error fetching field description:', error);
+    }
+    };
+    // Function to get all fields
+    const getFields = async (projectName) => {
+    try {
+    const response = await axios.get('http://localhost:44306/api/ProjectApi/GetFields', {
+    params: { projectName: projectName }
+    });
+    console.log(response.data); // Outputs: [{ Name: "Bucks", Description: "Drinks from water" }, ...]
+    } catch (error) {
+    console.error('Error fetching fields:', error);
+    }
+    };
 
-            // Example calls
-            getFieldDescription('ProjectA', 'Bucks');
-            getFields('ProjectA');
-            </code></pre>
+    // Example calls
+    getFieldDescription('ProjectA', 'Bucks');
+    getFields('ProjectA');
+</code></pre>
             </div>
 
 
@@ -116,33 +116,33 @@
             <div class="code-example">
                 <h3>Python (using requests library)</h3>
                 <pre><code class="language-python">
-                    import requests
+    import requests
 
-                    # Function to get field description
-                    def get_field_description(project_name, field_name):
-                        url = f'http://localhost:44306/api/Project/GetFieldDescription?projectName={project_name}&fieldName={field_name}'
-                        response = requests.get(url)
-                        if response.status_code == 200:
-                            return response.json()
-                        else:
-                            return None
+    # Function to get field description
+    def get_field_description(project_name, field_name):
+    url = f'http://localhost:44306/api/ProjectApi/GetFieldDescription?projectName={project_name}&fieldName={field_name}'
+    response = requests.get(url)
+    if response.status_code == 200:
+    return response.json()
+    else:
+    return None
 
-                    # Function to get all fields
-                    def get_fields(project_name):
-                        url = f'http://localhost:44306/api/Project/GetFields?projectName={project_name}'
-                        response = requests.get(url)
-                        if response.status_code == 200:
-                            return response.json()
-                        else:
-                            return None
+    # Function to get all fields
+    def get_fields(project_name):
+    url = f'http://localhost:44306/api/ProjectApi/GetFields?projectName={project_name}'
+    response = requests.get(url)
+    if response.status_code == 200:
+    return response.json()
+    else:
+    return None
 
-                    # Example calls
-                    field_description = get_field_description('ProjectA', 'Bucks')
-                    all_fields = get_fields('ProjectA')
+    # Example calls
+    field_description = get_field_description('ProjectA', 'Bucks')
+    all_fields = get_fields('ProjectA')
 
-                    print('Field description:', field_description)
-                    print('All fields:', all_fields)
-            </code></pre>
+    print('Field description:', field_description)
+    print('All fields:', all_fields)
+</code></pre>
             </div>
 
 
@@ -156,49 +156,49 @@
             <div class="code-example">
                 <h3>React (using fetch API or Axios)</h3>
                 <pre><code class="language-javascript">
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+    import React, { useEffect, useState } from 'react';
+    import axios from 'axios';
 
-const App = () => {
+    const App = () => {
     const [fieldDescription, setFieldDescription] = useState(null);
     const [allFields, setAllFields] = useState(null);
 
     useEffect(() => {
-        // Function to get field description
-        const getFieldDescription = async () => {
-            try {
-                const response = await axios.get('http://localhost:44306/api/Project/GetFieldDescription', {
-                    params: {
-                        projectName: 'ProjectA',
-                        fieldName: 'Bucks'
-                    }
-                });
-                setFieldDescription(response.data);
-            } catch (error) {
-                console.error('Error fetching field description:', error);
-            }
-        };
+    // Function to get field description
+    const getFieldDescription = async () => {
+    try {
+    const response = await axios.get('http://localhost:44306/api/ProjectApi/GetFieldDescription', {
+    params: {
+    projectName: 'ProjectA',
+    fieldName: 'Bucks'
+    }
+    });
+    setFieldDescription(response.data);
+    } catch (error) {
+    console.error('Error fetching field description:', error);
+    }
+    };
 
-        // Function to get all fields
-        const getFields = async () => {
-            try {
-                const response = await axios.get('http://localhost:44306/api/Project/GetFields', {
-                    params: { projectName: 'ProjectA' }
-                });
-                setAllFields(response.data);
-            } catch (error) {
-                console.error('Error fetching fields:', error);
-            }
-        };
+    // Function to get all fields
+    const getFields = async () => {
+    try {
+    const response = await axios.get('http://localhost:44306/api/ProjectApi/GetFields', {
+    params: { projectName: 'ProjectA' }
+    });
+    setAllFields(response.data);
+    } catch (error) {
+    console.error('Error fetching fields:', error);
+    }
+    };
 
-        getFieldDescription();
-        getFields();
+    getFieldDescription();
+    getFields();
     }, []);
 
-};
+    };
 
-export default App;
-            </code></pre>
+    export default App;
+</code></pre>
             </div>
 
 

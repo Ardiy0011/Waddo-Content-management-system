@@ -3,12 +3,16 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Waddo content mananger</title>
+    <title>@ViewBag.Title - Waddo content manager</title>
     <link rel="stylesheet" href="~/wwwroot/css/login-style.css" />
     <link rel="stylesheet" href="~/wwwroot/css/site.css" />
     <link rel="stylesheet" href="~/wwwroot/css/navlayout.css" />
+    <link rel="stylesheet" href="~/wwwroot/css/docs.css" />
     @Scripts.Render("~/bundles/modernizr")
 
+    <style>
+        /* Additional styles specific to this page if needed */
+    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -16,6 +20,12 @@
             @Html.ActionLink("Waddo", "Index", "Project", new { area = "" }, new { @class = "navbar-brand" })
         </div>
 
+        <!-- Hamburger menu icon -->
+        <div class="hamburger-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
 
         <div class="navlinks">
             <p class="nav-item">
@@ -31,7 +41,7 @@
                 <p class="navbar-text">Hello, @User.Identity.Name!</p>
 
                 <div class="nav-item-logoff">
-                    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post))
+                    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
                     {
                         @Html.AntiForgeryToken()
                         <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
@@ -48,19 +58,15 @@
                 <p class="nav-item">
                     @Html.ActionLink("Register", "Register", "Account", new { area = "" }, new { @class = "nav-link" })
                 </p>
-                    }
-            </div>
-
-</nav>
-
+            }
+        </div>
+    </nav>
 
     <div class="container body-content">
         @RenderBody()
 
-
-        <hr />
         <footer class="footer bg-light">
-            <div class="container">
+            <div class="footer-container">
                 <span class="text-muted">&copy; @DateTime.Now.Year - Waddo. All rights reserved</span>
             </div>
         </footer>
@@ -68,5 +74,17 @@
 
     @Scripts.Render("~/bundles/jquery")
     @RenderSection("scripts", required: false)
+
+    <script>
+        // JavaScript for responsive navigation
+        document.addEventListener("DOMContentLoaded", function () {
+            const menuToggle = document.querySelector(".hamburger-menu");
+            const navLinks = document.querySelector(".navlinks");
+
+            menuToggle.addEventListener("click", function () {
+                navLinks.classList.toggle("open");
+            });
+        });
+    </script>
 </body>
 </html>

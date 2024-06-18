@@ -94,7 +94,14 @@ namespace ProjectManager.Controllers
             return View(fieldModel);
         }
 
-        // GET: FieldModels/Delete/5
+
+        // POST: FieldModels/RemoveField
+            public ActionResult RemoveField()
+            {
+                return Content("Hello, World!");
+            }
+
+        // Existing Delete methods...
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -109,7 +116,6 @@ namespace ProjectManager.Controllers
             return View(fieldModel);
         }
 
-        // POST: FieldModels/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

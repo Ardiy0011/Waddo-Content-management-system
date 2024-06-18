@@ -89,7 +89,8 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val() // Include the anti-forgery token
                     },
                     body: JSON.stringify({ fieldId: fieldId })
                 })
@@ -98,7 +99,7 @@
                     if (data.success) {
                         document.querySelector('.field-group[data-field-id="' + fieldId + '"]').remove();
                     } else {
-                        alert('Error removing field.');
+                        alert('Error removing field: ' + data.message);
                     }
                 });
             }
@@ -127,7 +128,8 @@
                     method: 'POST',
                     body: new URLSearchParams(new FormData(this)),
                     headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val() // Include the anti-forgery token
                     }
                 })
                 .then(response => response.json())
@@ -135,7 +137,7 @@
                     if (data.success) {
                         location.reload();
                     } else {
-                        alert('Error saving field.');
+                        alert('Error saving field: ' + data.message);
                     }
                 });
             });

@@ -7,14 +7,14 @@
 <main class="projectbox">
     <section class="sidenav">
         <h2>Projects</h2>
-        <ul id="projectList">
+        <div id="projectList">
             @foreach (var item in Model)
             {
-                <li>
+                <p>
                     <a href="@Url.Action("Details", "Project", new { id = item.Id })">@item.Name</a>
-                </li>
+                </p>
             }
-        </ul>
+        </div>
     </section>
 
 
